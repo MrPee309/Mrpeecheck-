@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MrPeeCheck - Quick IMEI Check</title>
+  <script>
+    async function checkIMEI() {
+      const imei = document.getElementById('imei').value;
+      document.getElementById('result').innerHTML = "Checking...";
+      const response = await fetch(`/api/check?imei=${imei}`);
+      const data = await response.json();
+      if (data.error) {
+        document.getElementById('result').innerHTML = "<p style='color:red;'>Error: " + data.error + "</p>";
+      } else {
+        document.getElementById('result').innerHTML = `
+          <h3>Brand: ${data.brand || "N/A"}</h3>
+          <p>Model: ${data.model || "N/A"}</p>
+          <p>Type: ${data.type || "N/A"}</p>
+        `;
+      }
+    }
+  </script>
+</head>
+<body style="font-family: Arial; text-align: center; padding: 50px; background-color: #f8f8f8;">
+  <h1 style="color: orange;">MrPeeCheck</h1>
+  <h3>Quick IMEI Check</h3>
+  <input type="text" id="imei" placeholder="Enter 15-digit IMEI" maxlength="15" style="padding: 10px; width: 250px;">
+  <button onclick="checkIMEI()" style="padding: 10px 20px; background: orange; color: white; border: none; cursor: pointer;">Check IMEI</button>
+  <div id="result" style="margin-top: 20px;"></div>
+  <br>
+  <button onclick="window.location.href='payment.html'" style="padding: 10px 20px; background: #333; color: white; border: none; cursor: pointer;">Get Full Report</button>
+</body>
+</html>
